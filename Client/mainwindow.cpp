@@ -76,7 +76,6 @@ void MainWindow::on_btnStart_clicked()
 void MainWindow::on_btnDisconnect_clicked()
 {
     if (connected) {
-        //cls->send(Client::command::CMD_DISCONNECT);
         ui->btnStart->setEnabled(false);
         ui->btnStop->setEnabled(false);
         ui->btnDisconnect->setEnabled(false);

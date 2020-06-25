@@ -12,7 +12,6 @@
 #include <atomic>
 #include <memory>
 
-//#include "Client.h"
 #include "pipeclient.h"
 
 QT_BEGIN_NAMESPACE
