@@ -58,7 +58,7 @@
         packet->pIStmCompletionBuffer->Read(reinterpret_cast<char*>(&total), packet->nMetadataSize, nullptr);
         image.resize(total);
         count = tempTotal = tempCount = 0;
-
+        //
         qDebug() << "[Received total size of picture: " << total << "]\n";
         return true;
     }
