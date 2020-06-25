@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	}
 
     Server server(R"(\\.\pipe\testpipe)", argv[1]);
-    server.start(3);
+    server.start(5);
 	std::cout << "Press any key to stop server..." << std::endl;
 	std::cin.get();
     server.stop();

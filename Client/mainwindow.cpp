@@ -2,9 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include <string>
-//#include "Client.h"
 #include "pipeclient.h"
 
+#include <thread>
 #include <QDebug>
 #include <QMessageBox>
 
@@ -12,11 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    this->setFixedSize(314, 348);
+    //this->setFixedSize(314, 348);
     ui->setupUi(this);
 
     scene.reset(new QGraphicsScene(0, 0, 200, 200, this));
-    //cls.reset(new Client(R"(\\.\pipe\testpipe)"));
     cls.reset(new PipeClient(R"(\\.\pipe\testpipe)"));
     connect(cls.get(), &PipeClient::gotImage, this, &MainWindow::onImageReceived);
     connect(cls.get(), &PipeClient::disconnectEvent, this, &MainWindow::onDisconnect);
@@ -24,7 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-   cls->disconnect();
+    qDebug() << (cls->disconnect()
+                ? "[Successfully disconnected]\n"
+                : "[Failed to disconnect]\n");
    delete ui;
 }
 

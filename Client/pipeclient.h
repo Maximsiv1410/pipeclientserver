@@ -40,7 +40,7 @@ public:
     bool send(PipeClient::command cmd);
 
 
-    void disconnect();
+    bool disconnect();
 
        // получить общий размер в байтах
     bool getTotal(SPS_ACTIONPACKET *packet, unsigned long /*error*/);

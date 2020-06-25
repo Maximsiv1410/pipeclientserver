@@ -48,9 +48,9 @@
         return result;
     }
 
-    void PipeClient::disconnect()
+    bool PipeClient::disconnect()
     {
-        pcDisconnect(true);
+        return pcDisconnect(true);
     }
 
        // получить общий размер в байтах

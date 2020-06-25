@@ -224,7 +224,7 @@ void Server::onDisconnect(HANDLE pipe) {
 	std::unique_lock<std::mutex> ulock(mtx);
 	auto pos = streamMap.find(pipe);
 	if (pos != streamMap.end()) {
-		std::cout << "[Disconnect from client-side. ID: " << pos->second.id << "]\n";
+		std::cout << "[Disconnected client-side. ID: " << pos->second.id << "]\n";
 		streamMap.erase(pos);
 		ulock.unlock();
 		auto service = pool.find(pipe);
