@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //this->setFixedSize(314, 348);
     ui->setupUi(this);
 
     scene.reset(new QGraphicsScene(0, 0, 200, 200, this));

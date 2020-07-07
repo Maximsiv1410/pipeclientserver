@@ -12,6 +12,8 @@ Server::Server(const std::string &name, const std::string& path) : m_name(name),
 	psLinkAction(CMD_START, &Server::handle);
 	psLinkAction(CMD_BREAK, &Server::stopHandler);
 
+	
+
 	psLinkOnDisconnectHandler(&Server::onDisconnect);
 }
 
@@ -45,30 +47,9 @@ void Server::stop() {
 		// отправить всем клиентам уведомление об отключении
 		// а так же прекратить трансляцию данных
 		for (auto &flag : streamMap) {
-			/*action header;
-			databuff responsePacket;
-			header.dwClientLabel = flag.second.id;
-			header.nActionId = CMD_DISCONNECT;
-			GetSystemTimeAsFileTime(&header.ftTimeStamp);
-			header.nMetadataSize = sizeof(command);
-			responsePacket.write(&header, sizeof(header));
-			responsePacket.write(reinterpret_cast<unsigned char*>(&cmd), sizeof(command));
-
-			std::cout << "sent disconnect to " << flag.second.id << "\n";
-
-			SendAnswer(
-				reinterpret_cast<unsigned char *>(responsePacket.get_bufer()),
-				responsePacket.get_bufer_size(), flag.first, 0);*/
-
-
 			flag.second.stream = false;
 		}
 	}
-
-	/*for (auto & service : pool) {
-		if (service.second.joinable())
-			service.second.join();
-	}*/
 
 	auto count = psStopOverall();
 
@@ -105,11 +86,9 @@ bool Server::handle(SPS_ACTIONPACKET *packet, unsigned long /*error*/, HANDLE pi
 		streamMap[pipe] = Session{ packet->dwClientLabel, true };
 
 		std::cout << "[Starting translation for client No. " << packet->dwClientLabel << "]\n";
-		//streamMap[pipe] = Session{packet->dwClientLabel, true};
 		pool.emplace(pipe, std::thread(&Server::translate, this, *packet, pipe));
 	}
 
-	//translate(packet, pipe);
 
 	return true;
 }
@@ -179,10 +158,6 @@ void Server::translate(SPS_ACTIONPACKET packet, HANDLE hPipe) {
 					std::cout << "[Stopping translation for client No. " << packet.dwClientLabel << "]\n";
 					return;
 				}
-				else {
-					//std::cout << "continue streaming for client No. " << packet.dwClientLabel << "\n";
-					// for debug
-				}
 			}
 			else {
 				std::cout << "[Client " << packet.dwClientLabel << " was disconnected, interrupting translation]\n";
@@ -194,7 +169,6 @@ void Server::translate(SPS_ACTIONPACKET packet, HANDLE hPipe) {
 
 	// возможно, стоит отключать клиента, если больше нет потока изображений
 	std::cout << "[There's no more files to send for client " << packet.dwClientLabel << "]\n";
-	//pool.emplace(hPipe, std::thread(&Server::disconnect_pipe, this, hPipe));
 	std::thread(&Server::disconnect_pipe, this, hPipe).detach();
 
 }
@@ -214,7 +188,6 @@ bool Server::stopHandler(SPS_ACTIONPACKET *packet, unsigned long /*error*/, HAND
 		}
 	}
 
-	//std::cout << "[Client No." << packet->dwClientLabel << " stopped]\n";
 	return true;
 }
 
